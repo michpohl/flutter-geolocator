@@ -29,15 +29,15 @@
 
 - (void) getLocationAccuracyWithResult:(FlutterResult)result {
   if (@available(iOS 14, macOS 11, *)) {
-//    switch ([self.locationManager accuracyAuthorization]) {
-//      case CLAccuracyAuthorizationFullAccuracy:
-//        return result([NSNumber numberWithInt:(LocationAccuracy)precise]);
-//      case CLAccuracyAuthorizationReducedAccuracy:
-//        return result([NSNumber numberWithInt:(LocationAccuracy)reduced]);
-//      default:
+    switch ([self.locationManager accuracyAuthorization]) {
+      case CLAccuracyAuthorizationFullAccuracy:
+        return result([NSNumber numberWithInt:(LocationAccuracy)precise]);
+      case CLAccuracyAuthorizationReducedAccuracy:
+        return result([NSNumber numberWithInt:(LocationAccuracy)reduced]);
+      default:
         // in iOS 14, reduced location accuracy is the default
-//        return result([NSNumber numberWithInt:(LocationAccuracy)reduced]);
-//    }
+        return result([NSNumber numberWithInt:(LocationAccuracy)reduced]);
+    }
   } else {
     // If the version of iOS is below version number 14, approximate location is not available, thus
     // precise location is always returned
@@ -53,14 +53,14 @@
   }
   
   if (@available(iOS 14.0, macOS 11.0, *)) {
-  //  [self.locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
-  //                                                                     completion:^(NSError *_Nullable error) {
-  //    if ([self.locationManager accuracyAuthorization] == CLAccuracyAuthorizationFullAccuracy) {
-  //      return result([NSNumber numberWithInt:(LocationAccuracy)precise]);
-  //    } else {
-  //      return result([NSNumber numberWithInt:(LocationAccuracy)reduced]);
-  //    }
-  //  }];
+    [self.locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
+                                                                       completion:^(NSError *_Nullable error) {
+      if ([self.locationManager accuracyAuthorization] == CLAccuracyAuthorizationFullAccuracy) {
+        return result([NSNumber numberWithInt:(LocationAccuracy)precise]);
+      } else {
+        return result([NSNumber numberWithInt:(LocationAccuracy)reduced]);
+      }
+    }];
   } else {
     return result([NSNumber numberWithInt:(LocationAccuracy)precise]);
   }
